@@ -74,13 +74,14 @@ public class ReadExcel {
       int temp =  (Integer) it.next();
 
       System.out.println(temp + " : " + map.get(temp)+"회");
+     
 
     }
 
   }
 
 
-
+  //맵의 value 값으로 정렬 
   public static List<Integer> sortByValue(final Map<Integer, Integer> map){
 
     List<Integer> list = new ArrayList<Integer>();
