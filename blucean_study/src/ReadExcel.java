@@ -1,6 +1,8 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.TreeMap;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -16,7 +18,7 @@ public class ReadExcel {
 
     int[] numData = new int[6]; 
     int[] index = new int[46];
-    HashMap<String, String> map  = new HashMap<String, String>();
+    HashMap<Integer, Integer> map  = new HashMap<>();
 
 
 
@@ -43,9 +45,20 @@ public class ReadExcel {
     //숫자별 카운트를 맵 객체에 담기
     
     for (int i = 0; i < index.length; i++) {
-      map.put        
+      map.put(index[i], i);       
     }
   
+    TreeMap<Integer, Integer> treeMap = new TreeMap<>(map);
+    Iterator<Integer> treeMapIter = treeMap.keySet().iterator();
+
+    while(treeMapIter.hasNext()) {
+
+        int key = treeMapIter.next();
+        int value = treeMap.get( key );
+
+        System.out.println(key+" : "+value);
+
+    }
 
     
     
