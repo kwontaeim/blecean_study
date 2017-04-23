@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -44,21 +45,28 @@ public class ReadExcel {
     
     //숫자별 카운트를 맵 객체에 담기
     
-    for (int i = 0; i < index.length; i++) {
-      map.put(index[i], i);       
+    for (int i = 1; i < index.length; i++) {
+      map.put(index[i], i);  
+      
+      System.out.println(index[i] +": " +map.get(index[i]));
     }
   
-    TreeMap<Integer, Integer> treeMap = new TreeMap<>(map);
-    Iterator<Integer> treeMapIter = treeMap.keySet().iterator();
+    System.out.println("-----------------------------");
+    
+    TreeMap<Integer, Integer> treeMapReverse = new TreeMap<Integer, Integer>(Collections.reverseOrder());
+    treeMapReverse.putAll(map);
 
-    while(treeMapIter.hasNext()) {
+    Iterator<Integer> treeMapReverseIter = treeMapReverse.keySet().iterator();
 
-        int key = treeMapIter.next();
-        int value = treeMap.get( key );
+    while( treeMapReverseIter.hasNext()) {
+
+        int key = treeMapReverseIter.next();
+        int value = treeMapReverse.get(key);
 
         System.out.println(key+" : "+value);
 
     }
+
 
     
     
