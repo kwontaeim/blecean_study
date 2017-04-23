@@ -1,9 +1,12 @@
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.TreeMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -19,7 +22,8 @@ public class ReadExcel {
 
     int[] numData = new int[6]; 
     int[] index = new int[46];
-    HashMap<Integer, Integer> map  = new HashMap<>();
+    Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+
 
 
 
@@ -42,37 +46,74 @@ public class ReadExcel {
         index[numData[i]]++; //COUNT          
       }
     }
-    
+
     //숫자별 카운트를 맵 객체에 담기
-    
+
     for (int i = 1; i < index.length; i++) {
-      map.put(index[i], i);  
-      
-      System.out.println(index[i] +": " +map.get(index[i]));
-    }
-  
-    System.out.println("-----------------------------");
-    
-    TreeMap<Integer, Integer> treeMapReverse = new TreeMap<Integer, Integer>(Collections.reverseOrder());
-    treeMapReverse.putAll(map);
+      map.put(i, index[i]);  
 
-    Iterator<Integer> treeMapReverseIter = treeMapReverse.keySet().iterator();
-
-    while( treeMapReverseIter.hasNext()) {
-
-        int key = treeMapReverseIter.next();
-        int value = treeMapReverse.get(key);
-
-        System.out.println(key+" : "+value);
-
+      //System.out.println(map.get(i));
     }
 
 
-    
-    
     wb.close();
+    System.out.println("------------sort 전 -------------");
+
+    System.out.println(map);
+
+
+
+    Iterator<Integer> it = ReadExcel.sortByValue(map).iterator();
+
+
+
+    System.out.println("---------sort 후------------");
+
+    while(it.hasNext()){
+
+      int temp =  (Integer) it.next();
+
+      System.out.println(temp + " : " + map.get(temp)+"회");
+
+    }
+
   }
-  
- 
+
+
+
+  public static List<Integer> sortByValue(final Map<Integer, Integer> map){
+
+    List<Integer> list = new ArrayList<Integer>();
+
+    list.addAll(map.keySet());
+
+
+
+    Collections.sort(list,new Comparator<Object>(){
+
+      @SuppressWarnings("unchecked")
+
+      public int compare(Object o1,Object o2){
+
+        Object v1 = map.get(o1);
+
+        Object v2 = map.get(o2);
+
+
+
+        return ((Comparable<Object>) v1).compareTo(v2);
+
+      }
+
+    });
+
+    Collections.reverse(list); // 주석시 오름차순
+
+    return list;
+
+  }
+
+
+
 
 }
