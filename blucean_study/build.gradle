@@ -1,0 +1,26 @@
+//1) 사용할 gradle 플러그인 가져오기
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+/*
+2) 자바 소스 폴더 지정
+=> 지정하지 않으면 다음 구조로 간주한다.
+src/
+  main/
+    java/
+    resources/
+  test/
+    java/
+    resources/
+=> src 폴더에 자바 소스 파일을 바로 두도록 설정을 변경한다.
+*/
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+        resources {
+            srcDir 'src'
+        }
+    }
+}
