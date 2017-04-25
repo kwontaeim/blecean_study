@@ -69,54 +69,64 @@ public class ReadExcel2 {
 
     System.out.println("------최다 빈도 6개 수 내림차순 ------");
 
-    Iterator<Integer> it1 = ReadExcel2.sortValueDesc(map).iterator();
+    Iterator<Integer> it = ReadExcel2.sortValueDesc(map).iterator();
 
 
-    int[] maxNum = new int[45];
+    int[] descNum = new int[45];
+    int[] maxNum = new int[6];
+    int[] minNum = new int[6];
     int index = 0;
 
-    while(it1.hasNext()){
+    while(it.hasNext()){
 
-      int temp =  (Integer) it1.next();
+      int temp =  (Integer) it.next();
 
 
-      maxNum[index++] = temp;
+      descNum[index++] = temp;
       //System.out.println(temp + " : " + map.get(temp)+"회");
 
     }
 
 
     for(int i = 0; i < 6; i++) {
-      System.out.println( maxNum[i] + " : " + map.get(maxNum[i])+"회");
+      System.out.println( descNum[i] + " : " + map.get(descNum[i])+"회");
+      maxNum[i] = descNum[i];
+
     }
 
 
     System.out.println("------최소 빈도 6개 수 오름차순 ------");
 
 
-    for(int i = maxNum.length -1; i >= maxNum.length -6 ; i--) {
-      System.out.println( maxNum[i] + " : " + map.get(maxNum[i])+"회");
+    for(int i = descNum.length -1; i >= descNum.length -6 ; i--) {
+      System.out.println( descNum[i] + " : " + map.get(descNum[i])+"회");
+      minNum[(descNum.length -1)-i] = descNum[i];
     }
 
 
     //-------------------로또번호 만들기-----------------
 
     System.out.println("------로또번호 만들기 ------");
+
+
+    int lotto[] = new int[6];
+    int compareNum = 0; 
     
+
+    // Start time
+    long startTime = System.currentTimeMillis();
     
-    int Lotto[] = new int[6];
+    // 번호 돌리기 시작
+    while (compareNum < 6) {
 
     // 배열 생성
 
+    //System.out.print("lotto 선택 숫자는 [");
 
 
-    System.out.print("Lotto 선택 숫자는 [");
+    for(int i = 0; i < lotto.length; i++){
 
-
-
-    for(int i=0; i<Lotto.length; i++){
-
-      Lotto[i] = (int)(Math.random()*45)+1;
+      lotto[i] = (int)(Math.random()*45)+1;
 
       // 랜덤 값 반환
 
@@ -124,7 +134,7 @@ public class ReadExcel2 {
 
       for(int j=0; j<i; j++){
 
-        if(Lotto[i] ==Lotto[j]){
+        if(lotto[i] ==lotto[j]){
 
           i--;
 
@@ -136,19 +146,29 @@ public class ReadExcel2 {
 
     }
 
-    for(int i=0; i<Lotto.length; i++){
+    for(int i = 0; i < lotto.length; i++){
 
-      System.out.print(Lotto[i] + " ");
+      System.out.print(lotto[i] + " ");
 
     }
 
-    System.out.print("] 입니다.");
+    //System.out.print("] 입니다.");
 
 
+    //-------------------로또번호 만들기 끝-----------------
+
+    compareNum = compare(lotto,maxNum);    // 같은 번호가 몇개인지 비교
 
 
+    }
 
+    // End time
+    long endTime = System.currentTimeMillis();
 
+    // Total time
+    long lTime = endTime - startTime;
+    System.out.println("TIME : " + lTime + "(ms)");
+    
   }
 
 
@@ -182,6 +202,26 @@ public class ReadExcel2 {
 
     return list;
 
+
+  }
+
+
+  //배열 안의 값을 비교하는 메소드
+
+  static int compare(int arr[], int arr2[]){
+
+    int count = 0;
+
+    for (int i = 0; i < arr.length; i++){
+
+      for (int j = 0; j < arr2.length; j++){
+
+        if (arr[i] == arr2[j])
+
+          count++;
+      }
+    }
+    return count;
 
   }
 
