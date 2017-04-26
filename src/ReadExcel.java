@@ -11,7 +11,7 @@ import java.util.Map;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ReadExcel2 {
+public class ReadExcel {
 
   private static final String FILE_PATH = "/Users/blucean/Downloads/lolo.xlsx";
 
@@ -70,7 +70,7 @@ public class ReadExcel2 {
 
     System.out.println("\n------최다 빈도 6개 수 내림차순 ------");
 
-    Iterator<Integer> it = ReadExcel2.sortValueDesc(map).iterator();
+    Iterator<Integer> it = ReadExcel.sortValueDesc(map).iterator();
 
 
     int[] descNum = new int[45];
