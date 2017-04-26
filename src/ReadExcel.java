@@ -20,12 +20,12 @@ public class ReadExcel {
     // 엑셀파일 불러오기 
     File file = new File(FILE_PATH);
 
-    int[] excelNumData = new int[6]; 
-    int[] count = new int[46];
+    int[] excelNumData = new int[6]; // 엑셀
+    int[] count = new int[46]; // 로또 번호 카운트
     Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 
 
-    
+
     // 엑셀파일 오픈 
     XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(file));
 
@@ -41,27 +41,19 @@ public class ReadExcel {
         //System.out.println(numData[i-13]);
       }
 
+      wb.close();
+
       // 각 로또번호별 당첨 회수 카운트 배열에 담기
       for (int i = 0; i < excelNumData.length; i++) {
         count[excelNumData[i]]++; //COUNT          
       }
     }
 
-
-
     //숫자별 카운트 데이터 맵 객체에 담기
     for (int i = 1; i < count.length; i++) {
       map.put(i, count[i]);  
       //System.out.println(map.get(i));
     }
-
-
-    wb.close();
-
-
-    /*   System.out.println("------------sort 전 -------------");
-         System.out.println(map);
-     */
 
 
     System.out.println("\n------최다 빈도 6개 수 내림차순 ------");
@@ -114,25 +106,7 @@ public class ReadExcel {
     while (compareNum < 6) {
 
       // 랜덤번호 생성
-      for(int i = 0; i < lotto.length; i++){
-
-        lotto[i] = (int)(Math.random() * 45) + 1;
-        
-
-        // 랜덤 값 반환
-        for (int j = 0; j < i; j++) {
-
-          if (lotto[i] == lotto[j]) {
-
-            i--;
-
-            break;
-
-          }  // 중복 값 제거1
-        }
-      }
-
-
+      lotto = runLotto();
 
       compareNum = compare(lotto, maxNum);    // 같은 번호가 몇개인지 비교
 
@@ -164,34 +138,14 @@ public class ReadExcel {
     compareNum = 0;
     randomCount = 0;
 
-    
+
     // 최소당첨번호 돌리기 시작
     startTime = System.currentTimeMillis();
 
     while (compareNum < 6) {
 
       // 랜덤번호 생성
-
-      for(int i = 0; i < lotto.length; i++){
-
-        lotto[i] = (int)(Math.random()*45)+1;
-
-        // 랜덤 값 반환
-
-        for(int j = 0; j < i; j++){
-
-          if(lotto[i] == lotto[j]){
-
-            i--;
-
-            break;
-
-          }  // 중복 값 제거
-
-        }
-
-      }
-
+      lotto = runLotto();
 
       compareNum = compare(lotto, minNum);    // 같은 번호가 몇개인지 비교
       randomCount++;
@@ -233,18 +187,13 @@ public class ReadExcel {
 
       public int compare(Object o1,Object o2){
 
-        Object v1 = map.get(o1);
-
-        Object v2 = map.get(o2);
-
+        Object v1 = map.get(o2);
+        Object v2 = map.get(o1);
 
         return ((Comparable<Object>) v1).compareTo(v2);
 
       }
-
     });
-
-    Collections.reverse(list); // 주석시 오름차순
 
     return list;
 
@@ -252,22 +201,40 @@ public class ReadExcel {
 
 
   //배열 안의 값을 비교하는 메소드
-
-  static int compare(int arr[], int arr2[]){
+  static int compare(int arr[], int arr2[]) {
 
     int count = 0;
 
     for (int i = 0; i < arr.length; i++){
-
       for (int j = 0; j < arr2.length; j++){
-
         if (arr[i] == arr2[j])
 
           count++;
       }
     }
     return count;
+  }
+  
 
+  //당첨번호 생성 메소드
+  static int[] runLotto() {
+    
+    int [] arr = new int[6];
+    
+    for (int i = 0; i < arr.length; i++) {
+
+      arr[i] = (int)(Math.random() * 45) + 1;
+
+      // 랜덤 값 반환
+      for (int j = 0; j < i; j++) {
+        if (arr[i] == arr[j]) {
+          i--;
+          break;
+
+        }  // 중복 값 제거1
+      }
+    }
+    return arr;
   }
 
 }
