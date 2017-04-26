@@ -99,7 +99,7 @@ public class ReadExcel2 {
 
     for(int i = descNum.length -1; i >= descNum.length -6 ; i--) {
       minNum[(descNum.length -1)-i] = descNum[i];
-      System.out.println( minNum[(descNum.length -1)-i] + " : " + map.get(descNum[i])+"회");
+      System.out.println( minNum[(descNum.length -1)-i] + " : " + map.get(descNum[i]) + "회");
     }
 
 
@@ -110,6 +110,8 @@ public class ReadExcel2 {
 
     int lotto[] = new int[6];
     int compareNum = 0; 
+    int randomCount = 0;
+    double prob = 0;
 
 
     // Start time
@@ -119,27 +121,22 @@ public class ReadExcel2 {
     while (compareNum < 6) {
 
       // 랜덤번호 생성
-
-
-
       for(int i = 0; i < lotto.length; i++){
 
-        lotto[i] = (int)(Math.random()*45)+1;
+        lotto[i] = (int)(Math.random() * 45) + 1;
 
         // 랜덤 값 반환
 
-        for(int j = 0; j < i; j++){
+        for (int j = 0; j < i; j++) {
 
-          if(lotto[i] == lotto[j]){
+          if (lotto[i] == lotto[j]) {
 
             i--;
 
             break;
 
           }  // 중복 값 제거1
-
         }
-
       }
 
 
@@ -165,8 +162,8 @@ public class ReadExcel2 {
     long endTime = System.currentTimeMillis();
 
     // Total time
-    long lTime = endTime - startTime;
-    System.out.println("\n최다 빈도 당첨번호 생성 시간은  " + lTime + "(ms) 입니다.");
+    long totalTime = endTime - startTime;
+    System.out.println("\n최다 빈도 당첨번호 생성 시간은  " + totalTime + "(ms) 입니다.");
     
     
     
@@ -221,20 +218,19 @@ public class ReadExcel2 {
     endTime = System.currentTimeMillis();
 
     // Total time
-    lTime = endTime - startTime;
-    System.out.println("\n최소 빈도 당첨번호 생성 시간은  " + lTime + "(ms) 입니다.");
+     totalTime = endTime - startTime;
+    System.out.println("\n최소 빈도 당첨번호 생성 시간은  " + totalTime + "(ms) 입니다.");
 
   }
 
 
 
-  //맵의 value 값으로 정렬 
+  //맵의 value 값으로 정렬하는 메소드
   public static List<Integer> sortValueDesc(final Map<Integer, Integer> map){
 
     List<Integer> list = new ArrayList<Integer>();
 
     list.addAll(map.keySet());
-
 
 
     Collections.sort(list,new Comparator<Object>(){
@@ -256,7 +252,6 @@ public class ReadExcel2 {
     Collections.reverse(list); // 주석시 오름차순
 
     return list;
-
 
   }
 
