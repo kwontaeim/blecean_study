@@ -42,6 +42,7 @@ public class ReadExcel2 {
         //System.out.println(numData[i-13]);
       }
 
+      // 각 로또번호별 당첨 회수 카운트
       for (int i = 0; i < excelNumData.length; i++) {
         count[excelNumData[i]]++; //COUNT          
       }
@@ -49,7 +50,7 @@ public class ReadExcel2 {
 
 
 
-    //숫자별 카운트를 맵 객체에 담기
+    //숫자별 카운트 데이터 맵 객체에 담기
 
     for (int i = 1; i < count.length; i++) {
       map.put(i, count[i]);  
@@ -67,13 +68,13 @@ public class ReadExcel2 {
      */
 
 
-    System.out.println("------최다 빈도 6개 수 내림차순 ------");
+    System.out.println("\n------최다 빈도 6개 수 내림차순 ------");
 
     Iterator<Integer> it = ReadExcel2.sortValueDesc(map).iterator();
 
 
     int[] descNum = new int[45];
-    int[] maxNum = new int[6];
+    int[] maxNum = new int[6]; // 
     int[] minNum = new int[6];
     int index = 0;
 
@@ -81,10 +82,8 @@ public class ReadExcel2 {
 
       int temp =  (Integer) it.next();
 
-
       descNum[index++] = temp;
       //System.out.println(temp + " : " + map.get(temp)+"회");
-
     }
 
 
@@ -95,56 +94,119 @@ public class ReadExcel2 {
     }
 
 
-    System.out.println("------최소 빈도 6개 수 오름차순 ------");
+    System.out.println("\n------최소 빈도 6개 수 오름차순 ------");
 
 
     for(int i = descNum.length -1; i >= descNum.length -6 ; i--) {
-      System.out.println( descNum[i] + " : " + map.get(descNum[i])+"회");
       minNum[(descNum.length -1)-i] = descNum[i];
+      System.out.println( minNum[(descNum.length -1)-i] + " : " + map.get(descNum[i])+"회");
     }
 
 
     //-------------------로또번호 만들기-----------------
 
-    System.out.println("------로또번호 만들기 ------");
+    System.out.println("\n------랜덤 로또번호 만들기 ------");
 
 
     int lotto[] = new int[6];
     int compareNum = 0; 
-    
+
 
     // Start time
     long startTime = System.currentTimeMillis();
-    
-    // 번호 돌리기 시작
+
+    // 최다당첨번호 돌리기 시작
     while (compareNum < 6) {
 
-    // 배열 생성
-
-    //System.out.print("lotto 선택 숫자는 [");
-
-
-    for(int i = 0; i < lotto.length; i++){
-
-      lotto[i] = (int)(Math.random()*45)+1;
-
-      // 랜덤 값 반환
+      // 랜덤번호 생성
 
 
 
-      for(int j=0; j<i; j++){
+      for(int i = 0; i < lotto.length; i++){
 
-        if(lotto[i] ==lotto[j]){
+        lotto[i] = (int)(Math.random()*45)+1;
 
-          i--;
+        // 랜덤 값 반환
 
-          break;
+        for(int j = 0; j < i; j++){
 
-        }  // 중복 값 제거1
+          if(lotto[i] == lotto[j]){
+
+            i--;
+
+            break;
+
+          }  // 중복 값 제거1
+
+        }
 
       }
 
+
+
+      //-------------------로또번호 만들기 끝-----------------
+
+      compareNum = compare(lotto, maxNum);    // 같은 번호가 몇개인지 비교
+
     }
+
+    System.out.print("\nlotto 선택 숫자는 [");
+
+    for(int i = 0; i < lotto.length; i++) {
+
+      System.out.print(lotto[i] + " ");
+
+    }
+
+    System.out.print("] 입니다.");
+
+
+    // End time
+    long endTime = System.currentTimeMillis();
+
+    // Total time
+    long lTime = endTime - startTime;
+    System.out.println("\n최다 빈도 당첨번호 생성 시간은  " + lTime + "(ms) 입니다.");
+    
+    
+    
+    compareNum = 0;
+    
+    // 최소당첨번호 돌리기 시작
+    startTime = System.currentTimeMillis();
+    
+    while (compareNum < 6) {
+
+      // 랜덤번호 생성
+
+      for(int i = 0; i < lotto.length; i++){
+
+        lotto[i] = (int)(Math.random()*45)+1;
+
+        // 랜덤 값 반환
+
+        for(int j = 0; j < i; j++){
+
+          if(lotto[i] == lotto[j]){
+
+            i--;
+
+            break;
+
+          }  // 중복 값 제거1
+
+        }
+
+      }
+
+
+      //-------------------로또번호 만들기 끝-----------------
+
+      compareNum = compare(lotto, minNum);    // 같은 번호가 몇개인지 비교
+
+    }
+    
+    System.out.print("\nlotto 선택 숫자는 [");
 
     for(int i = 0; i < lotto.length; i++){
 
@@ -152,23 +214,16 @@ public class ReadExcel2 {
 
     }
 
-    //System.out.print("] 입니다.");
+    System.out.print("] 입니다.");
 
-
-    //-------------------로또번호 만들기 끝-----------------
-
-    compareNum = compare(lotto,maxNum);    // 같은 번호가 몇개인지 비교
-
-
-    }
 
     // End time
-    long endTime = System.currentTimeMillis();
+    endTime = System.currentTimeMillis();
 
     // Total time
-    long lTime = endTime - startTime;
-    System.out.println("TIME : " + lTime + "(ms)");
-    
+    lTime = endTime - startTime;
+    System.out.println("\n최소 빈도 당첨번호 생성 시간은  " + lTime + "(ms) 입니다.");
+
   }
 
 
