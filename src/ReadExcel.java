@@ -13,7 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ReadExcel {
 
-  private static final String FILE_PATH = "/Users/blucean/Downloads/lolo.xlsx";
+  private static final String FILE_PATH = "/Users/blucean/Downloads/lolo.xlsx"; // 파일 경로 스태틱 변수에 담기
 
   public static void main(String[] args) throws Exception {
 
@@ -25,8 +25,7 @@ public class ReadExcel {
     Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 
 
-
-
+    
     // 엑셀파일 오픈 
     XSSFWorkbook wb = new XSSFWorkbook(new FileInputStream(file));
 
@@ -42,7 +41,7 @@ public class ReadExcel {
         //System.out.println(numData[i-13]);
       }
 
-      // 각 로또번호별 당첨 회수 카운트
+      // 각 로또번호별 당첨 회수 카운트 배열에 담기
       for (int i = 0; i < excelNumData.length; i++) {
         count[excelNumData[i]]++; //COUNT          
       }
@@ -51,10 +50,8 @@ public class ReadExcel {
 
 
     //숫자별 카운트 데이터 맵 객체에 담기
-
     for (int i = 1; i < count.length; i++) {
       map.put(i, count[i]);  
-
       //System.out.println(map.get(i));
     }
 
@@ -63,8 +60,7 @@ public class ReadExcel {
 
 
     /*   System.out.println("------------sort 전 -------------");
-
-    System.out.println(map);
+         System.out.println(map);
      */
 
 
@@ -78,17 +74,16 @@ public class ReadExcel {
     int[] minNum = new int[6];
     int index = 0;
 
+    // iterator 오름파순 내림차순 정렬 데이터 배열에 담기
     while(it.hasNext()){
-
       int temp =  (Integer) it.next();
-
       descNum[index++] = temp;
       //System.out.println(temp + " : " + map.get(temp)+"회");
     }
 
 
     for(int i = 0; i < 6; i++) {
-      System.out.println( descNum[i] + " : " + map.get(descNum[i])+"회");
+      System.out.println( descNum[i] + " : " + map.get(descNum[i]) + "회");
       maxNum[i] = descNum[i];
 
     }
@@ -103,15 +98,13 @@ public class ReadExcel {
     }
 
 
-    //-------------------로또번호 만들기-----------------
 
     System.out.println("\n------랜덤 로또번호 만들기 ------");
 
 
-    int lotto[] = new int[6];
-    int compareNum = 0; 
-    int randomCount = 0;
-    double prob = 0;
+    int lotto[] = new int[6];   // 랜덤 로또번호 담을 배열
+    int compareNum = 0;     // 최다빈도, 최소빈도수와 매칭할 카운트
+    int randomCount = 0;    // 랜덤번호 생성 카운트
 
 
     // Start time
@@ -124,9 +117,9 @@ public class ReadExcel {
       for(int i = 0; i < lotto.length; i++){
 
         lotto[i] = (int)(Math.random() * 45) + 1;
+        
 
         // 랜덤 값 반환
-
         for (int j = 0; j < i; j++) {
 
           if (lotto[i] == lotto[j]) {
@@ -141,13 +134,13 @@ public class ReadExcel {
 
 
 
-      //-------------------로또번호 만들기 끝-----------------
-
       compareNum = compare(lotto, maxNum);    // 같은 번호가 몇개인지 비교
+
+      randomCount++;
 
     }
 
-    System.out.print("\nlotto 선택 숫자는 [");
+    System.out.print("\n선택된 로또 숫자는 [");
 
     for(int i = 0; i < lotto.length; i++) {
 
@@ -164,14 +157,17 @@ public class ReadExcel {
     // Total time
     long totalTime = endTime - startTime;
     System.out.println("\n최다 빈도 당첨번호 생성 시간은  " + totalTime + "(ms) 입니다.");
-    
-    
-    
+    System.out.println("해당 번호가 생성될 확률은  1/" + randomCount + " 입니다.");
+
+
+    // 카운트 함수 초기화
     compareNum = 0;
+    randomCount = 0;
+
     
     // 최소당첨번호 돌리기 시작
     startTime = System.currentTimeMillis();
-    
+
     while (compareNum < 6) {
 
       // 랜덤번호 생성
@@ -190,20 +186,18 @@ public class ReadExcel {
 
             break;
 
-          }  // 중복 값 제거1
+          }  // 중복 값 제거
 
         }
 
       }
 
 
-      //-------------------로또번호 만들기 끝-----------------
-
       compareNum = compare(lotto, minNum);    // 같은 번호가 몇개인지 비교
-
+      randomCount++;
     }
-    
-    System.out.print("\nlotto 선택 숫자는 [");
+
+    System.out.print("\n선택된 로또 숫자는 [");
 
     for(int i = 0; i < lotto.length; i++){
 
@@ -218,8 +212,9 @@ public class ReadExcel {
     endTime = System.currentTimeMillis();
 
     // Total time
-     totalTime = endTime - startTime;
+    totalTime = endTime - startTime;
     System.out.println("\n최소 빈도 당첨번호 생성 시간은  " + totalTime + "(ms) 입니다.");
+    System.out.println("해당 번호가 생성될 확률은  1/" + randomCount + " 입니다.");
 
   }
 
