@@ -30,6 +30,7 @@ public class ReadExcel2 {
 
 		XSSFWorkbook wb = null;
 		FileInputStream fi = null;
+		
 		try {
 			fi = new FileInputStream(file);
 			// 엑셀파일 오픈
