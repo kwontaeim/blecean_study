@@ -13,46 +13,42 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ReadExcel {
 
-  private static final String FILE_PATH = "/Users/blucean/Downloads/lolo.xlsx"; // 파일 경로 스태틱 변수에 담기
+  private static final String FILE_PATH = "/Users/KWON/Downloads/lolo(1-750).xlsx"; // 파일 경로 스태틱 변수에 담기
 
   public static void main(String[] args) throws Exception {
 
     // 엑셀파일 불러오기 
     File file = new File(FILE_PATH);
-    int[] numCount; // 로또 번호 빈도 카운트 
+    int[] numCount; // 로또 번호 빈도 카운트를 담을 배열
+    
 
-    Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-
-
-    // 엑셀파일에서 데이터 읽기
+    // 엑셀파일에서 로또번호 카운트 배열 읽기
     numCount = getExcelData(new XSSFWorkbook(new FileInputStream(file)));
     
     
     // 숫자별 카운트 데이터 맵 객체에 담기
+    Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+    
     for (int i = 1; i < numCount.length; i++) {
       map.put(i, numCount[i]);
-      // System.out.println(map.get(i));
     }
 
-
-
-    System.out.println("\n------최다 빈도 6개 수 내림차순 ------");
-
+    // 이터레이터로 내림차순 정렬
     Iterator<Integer> it = ReadExcel.sortByValue(map).iterator();
 
 
-    int[] descNum = new int[45];
-    int[] maxNum = new int[6]; // 
-    int[] minNum = new int[6];
+    int[] descNum = new int[45]; // 내림차순 정렬 데이터 담을 배열
+    int[] maxNum = new int[6]; // 최다 빈도 번호 배열
+    int[] minNum = new int[6]; // 최소 빈도 번호 배열
     int index = 0;
 
-    // iterator 오름차순 내림차순 정렬 데이터 배열에 담기
-    while(it.hasNext()){
+    // iterator 내림차순 정렬 데이터 배열에 담기
+    while (it.hasNext()) {
       int temp =  (Integer) it.next();
       descNum[index++] = temp;
-      //System.out.println(temp + " : " + map.get(temp)+"회");
     }
 
+    System.out.println("\n------최다 빈도 6개 수 내림차순 ------");
 
     for(int i = 0; i < 6; i++) {
       System.out.println( descNum[i] + " : " + map.get(descNum[i]) + "회");
@@ -91,8 +87,12 @@ public class ReadExcel {
       randomCount++;
 
     }
+    
+    
+    // End time
+    long endTime = System.currentTimeMillis();
 
-    System.out.print("\n선택된 로또 숫자는 [");
+    System.out.print("\n선택된 로또 숫자: ");
 
     for(int i = 0; i < lotto.length; i++) {
 
@@ -100,15 +100,8 @@ public class ReadExcel {
 
     }
 
-    System.out.print("] 입니다.");
 
-
-    // End time
-    long endTime = System.currentTimeMillis();
-
-    // Total time
-    long totalTime = endTime - startTime;
-    System.out.println("\n최소 빈도 당첨번호 생성 시간은  " + totalTime + "(ms) 입니다. \n해당 번호가 생성될 확률은  1/" + randomCount + " 입니다.");
+    System.out.println("\n최소 빈도 당첨번호 생성 시간은  " + (endTime - startTime) + "(ms) 입니다. \n해당 번호가 생성될 확률은  1/" + randomCount + " 입니다.");
 
 
     // 카운트 함수 초기화
@@ -128,30 +121,28 @@ public class ReadExcel {
       randomCount++;
     }
 
-    System.out.print("\n선택된 로또 숫자는 [");
+    // End time
+    endTime = System.currentTimeMillis();
+    
+    System.out.print("\n선택된 로또 숫자: ");
 
     for(int i = 0; i < lotto.length; i++){
       System.out.print(lotto[i] + " ");
     }
-    System.out.print("] 입니다.");
 
-
-    // End time
-    endTime = System.currentTimeMillis();
-
-    // Total time
-    totalTime = endTime - startTime;
-    System.out.println("\n최소 빈도 당첨번호 생성 시간은  " + totalTime + "(ms) 입니다. \n해당 번호가 생성될 확률은  1/" + randomCount + " 입니다.");
+    System.out.println("\n최소 빈도 당첨번호 생성 시간은  " + (endTime - startTime)+ "(ms) 입니다. \n해당 번호가 생성될 확률은  1/" + randomCount + " 입니다.");
 
   }
 
   
   
-   static int[] getExcelData(XSSFWorkbook wb) {
-    
+  //메소드 정의 구간----------------------------------------------------------------------------------
 
+  // 엑셀 데이터 받기
+   static int[] getExcelData(XSSFWorkbook wb) {
+   
     int[] excelNumData = new int[6]; // 엑셀
-    int[] count = new int[46]; // 로또 번호 카운트
+    int[] count = new int[46]; // 로또 번호 카운트를 담을 배열
     
     for (Row row : wb.getSheetAt(0)) {
 
@@ -160,7 +151,7 @@ public class ReadExcel {
         continue;
       }
 
-      // 회자별 로또번호 저장 
+      // 회차별 로또번호 저장 
       for (int i = 13; i <= 18; i++) {
         excelNumData[i-13] = (int)row.getCell(i).getNumericCellValue();
         //System.out.println(numData[i-13]);
@@ -182,9 +173,7 @@ public class ReadExcel {
 
     list.addAll(map.keySet());
 
-
     Collections.sort(list,new Comparator<Object>(){
-
 
       public int compare(Object o1, Object o2){
 
@@ -195,9 +184,7 @@ public class ReadExcel {
 
       }
     });
-
     return list;
-
   }
 
 
@@ -223,16 +210,12 @@ public class ReadExcel {
     int [] arr = new int[6];
 
     for (int i = 0; i < arr.length; i++) {
-
       arr[i] = (int) (Math.random() * 45) + 1;
 
       // 랜덤 값 반환
       for (int j = 0; j < i; j++) {
-
         if (arr[i] == arr[j]) {
-
           i--;
-
           break;
         } // 중복 값 제거
       }
