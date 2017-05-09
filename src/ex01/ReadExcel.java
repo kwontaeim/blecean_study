@@ -1,3 +1,4 @@
+package ex01;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -196,7 +197,6 @@ public class ReadExcel {
     for (int i = 0; i < arr.length; i++){
       for (int j = 0; j < arr2.length; j++){
         if (arr[i] == arr2[j])
-
           count++;
       }
     }
@@ -207,7 +207,7 @@ public class ReadExcel {
   //당첨번호 생성 메소드
   static int[] runLotto() {
 
-    int [] arr = new int[6];
+    int[] arr = new int[6];
 
     for (int i = 0; i < arr.length; i++) {
       arr[i] = (int) (Math.random() * 45) + 1;
