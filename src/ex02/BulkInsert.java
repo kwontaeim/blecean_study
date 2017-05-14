@@ -2,60 +2,59 @@ package ex02;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class BulkInsert {
   
 
   public static void main(String[] args) {
- // Start time
-    String fliePath = "/Users/KWON/Downloads/error.csv"; // 파일 경로 스태틱 변수에 담기
-    long startTime = System.currentTimeMillis();
+
+    String fliePath = "/Users/KWON/Downloads/error.csv"; // 파일 경로
+    long startTime = System.currentTimeMillis(); // Start time
     
-    DBase db = new DBase();
-    Connection conn = db.connect("jdbc:mariadb://localhost:3306/mydb","root","1111");
-    db.importData(conn, fliePath);
+    DataBase db = new DataBase();
+    Connection con = db.connect("jdbc:mariadb://localhost:3306/mydb","root","1111");
+    db.importData(con, fliePath);
   
-    // End time
-    long endTime = System.currentTimeMillis();
+    long endTime = System.currentTimeMillis(); // End time
     System.out.println("\n시스템 수행시간은  " + (endTime - startTime) + "(ms) 입니다.");
   }
 
 }
 
-class DBase {
+class DataBase {
 
   public Connection connect(String db_connect_str, String db_userid, String db_password) {
     
-    Connection conn;
+    Connection con; // DB커넥션
     
     try {
-      Class.forName("com.mysql.jdbc.Driver").newInstance();
+      Class.forName("com.mysql.jdbc.Driver").newInstance(); // 드라이버 instance 생성 
 
-      conn = DriverManager.getConnection(db_connect_str, db_userid, db_password);
+      con = DriverManager.getConnection(db_connect_str, db_userid, db_password); // 디비접속 
     }
     catch(Exception e) {
       e.printStackTrace();
-      conn = null;
+      con = null;
     }
 
-    return conn;    
+    return con;    
   }
 
-  public void importData(Connection conn, String filename) {
+  public void importData(Connection con, String filename) {
     Statement stmt;
     String query;
 
     try {
       query = "LOAD DATA INFILE '"+ filename + "' INTO TABLE blucean_test_1 FIELDS TERMINATED BY ','  LINES TERMINATED BY '\n' IGNORE 1 LINES (@userNoValue, type, message, @dateValue, trace) set userNo = if(@userNoValue='', null, @userNoValue), date = if(@dateValue='', null, @dateValue)";
-      stmt = conn.prepareStatement(query, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+      stmt = con.prepareStatement(query);
 
       stmt.executeUpdate(query);
     }
     catch(Exception e) {
       e.printStackTrace();
       stmt = null;
+      
     }
   }
 }
